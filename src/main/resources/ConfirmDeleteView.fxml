@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="75.0" prefWidth="166.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.ConfirmDeleteController">
+   <children>
+      <Label layoutX="15.0" layoutY="13.0" text="Account wirklich löschen?" />
+      <Button fx:id="deleteYesBttn" layoutX="15.0" layoutY="37.0" mnemonicParsing="false" onAction="#confirmDelte" text="Ja" />
+      <Button fx:id="delteNoBttn" layoutX="110.0" layoutY="37.0" mnemonicParsing="false" onAction="#dontDelte" text="Nein" />
+   </children>
+</AnchorPane>

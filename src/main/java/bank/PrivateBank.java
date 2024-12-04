@@ -513,9 +513,10 @@ public class PrivateBank implements Bank {
         }
     }
 
-    void deleteAccount(String account) throws IOException {
+    public void deleteAccount(String account) throws IOException {
         File f = new File(this.directory +"\\" + account + ".json");
         f.delete();
+        this.accountsToTransactions.remove(account);
     }
 
     List<String> getAllAccounts() {

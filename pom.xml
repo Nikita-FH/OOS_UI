@@ -11,6 +11,11 @@
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>23</source>
+                    <target>23</target>
+                    <compilerArgs>--enable-preview</compilerArgs>
+                </configuration>
                 <groupId>org.apache.maven.plugins</groupId>
                 <version>3.13.0</version>
             </plugin>
@@ -66,8 +71,8 @@
     </dependencyManagement>
 
     <properties>
-        <maven.compiler.release>17</maven.compiler.release>
-        <javafx.version>22</javafx.version>
+        <maven.compiler.release>23</maven.compiler.release>
+        <javafx.version>23.0.1</javafx.version>
         <javafx.maven.plugin.version>0.0.8</javafx.maven.plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
