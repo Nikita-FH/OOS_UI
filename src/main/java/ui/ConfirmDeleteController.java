@@ -38,7 +38,7 @@ public class ConfirmDeleteController {
         });
         ConfirmDeleteController.mainController = mainController;
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(AddAccountController.class.getClassLoader().getResource("ConfirmDeleteView.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(ConfirmDeleteController.class.getClassLoader().getResource("ConfirmDeleteView.fxml"));
             Parent root = (Parent) fxmlLoader.load();
             dialog.setScene(new Scene(root));
         } catch (IOException e) {

@@ -1,11 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Text?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.AccountController">
    <children>
-      <Text layoutX="235.0" layoutY="196.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Das ist nen AccountView" />
+      <Label layoutX="3.0" layoutY="39.0" text="Account von:" />
+      <Label layoutX="6.0" layoutY="61.0" text="Kontostand:" AnchorPane.leftAnchor="6.0" />
+      <Label fx:id="accountLabel" layoutX="73.0" layoutY="39.0" text="name" />
+      <Label fx:id="kontostandLabel" layoutX="70.0" layoutY="61.0" text="Betrag" />
+      <Button layoutX="2.0" layoutY="12.0" mnemonicParsing="false" onAction="#changeToMainView" prefHeight="26.0" prefWidth="70.0" text="zurück" AnchorPane.leftAnchor="545.6" />
+      <ListView fx:id="transactionList" layoutX="7.0" layoutY="79.0" prefHeight="307.0" prefWidth="686.0" AnchorPane.bottomAnchor="13.600000000000023" AnchorPane.leftAnchor="7.2000000000000455" AnchorPane.rightAnchor="6.600000000000023" AnchorPane.topAnchor="79.0">
+         <contextMenu>
+            <ContextMenu fx:id="deleteContext">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+              </items>
+            </ContextMenu>
+         </contextMenu>
+      </ListView>
+      <MenuButton fx:id="sortOptionMenu" layoutX="565.0" layoutY="48.0" mnemonicParsing="false" text="Keine Sortierung" AnchorPane.rightAnchor="14.200000000000003">
+        <items>
+          <MenuItem mnemonicParsing="false" text="Action 1" />
+          <MenuItem mnemonicParsing="false" text="Action 2" />
+        </items>
+      </MenuButton>
+      <Button layoutX="546.0" layoutY="12.0" mnemonicParsing="false" onAction="#openAddTransaktion" text="Transaktion hinzufügen" AnchorPane.rightAnchor="14.0" />
    </children>
 </AnchorPane>

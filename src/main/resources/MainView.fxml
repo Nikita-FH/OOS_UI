@@ -6,7 +6,7 @@
 
 <AnchorPane prefHeight="439.0" prefWidth="290.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.MainController">
    <children>
-      <ListView fx:id="accountList" layoutX="16.0" layoutY="14.0" prefHeight="366.0" prefWidth="259.0" />
-      <Button fx:id="addAccountBttn" layoutX="72.0" layoutY="392.0" mnemonicParsing="false" onAction="#openAddAccount" prefHeight="33.0" prefWidth="147.0" text="Account hinzufügen" />
+      <ListView fx:id="accountList" layoutX="16.0" layoutY="14.0" prefHeight="366.0" prefWidth="259.0" AnchorPane.bottomAnchor="58.60000000000002" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="14.800000000000011" AnchorPane.topAnchor="14.200000000000045" />
+      <Button fx:id="addAccountBttn" layoutX="72.0" layoutY="391.0" mnemonicParsing="false" onAction="#openAddAccount" prefHeight="33.0" prefWidth="147.0" text="Account hinzufügen" AnchorPane.bottomAnchor="14.399999999999977" AnchorPane.leftAnchor="72.0" AnchorPane.rightAnchor="71.19999999999999" />
    </children>
 </AnchorPane>

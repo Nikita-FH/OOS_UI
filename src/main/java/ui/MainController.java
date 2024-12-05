@@ -8,7 +8,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
@@ -26,21 +29,10 @@ public class MainController {
     @FXML
     private Button addAccountBttn;
 
-    private Path p = Paths.get(".\\src\\main\\resources\\PrivateBanken\\Sparkasse");
     private PrivateBank bank;
 
     @FXML
     public void initialize() {
-        try {
-            if (p.toFile().exists()){
-                bank = new PrivateBank("Sparkasse",0.1,0.1,true);
-            }
-            else bank = new PrivateBank("Sparkasse",0.1,0.1,false);
-        } catch (PrivateBankAlreadyExistsException | IOException e) {throw new RuntimeException(e);}
-
-        PrivateBankHolder privateBankHolder =  PrivateBankHolder.getInstance();
-        privateBankHolder.setBank(bank);
-
         updateAccountList();
     }
 
@@ -83,10 +75,22 @@ public class MainController {
 
         accountList.setItems(options);
     }
-
+    @FXML
     public void changeToAccountView(String accountName) {
-        AccountController accountController = new AccountController();
-        Stage root = (Stage) accountList.getScene().getWindow();
-        accountController.openAccountView(accountName,root);
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(AccountController.class.getClassLoader().getResource("AccountView.fxml"));
+            Parent newScene = fxmlLoader.load();
+            Stage root = (Stage) accountList.getScene().getWindow();
+
+            root.setTitle(accountName);
+            root.setScene(new Scene(newScene));
+            root.show();
+            AccountController controller = fxmlLoader.getController();
+            controller.getMainData(accountName);
+            controller.updateTransactionList(accountName);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
