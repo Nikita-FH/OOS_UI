@@ -11,10 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.MenuButton;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
@@ -38,6 +35,59 @@ public class AccountController {
     private List<Transaction> accountTransactions;
     private PrivateBank bank;
     private String name;
+
+    public void initialize() {
+        sortOptionMenu.getItems().clear();
+        MenuItem noSort = new MenuItem("Keine Sortierung");
+        noSort.setOnAction((ActionEvent event) -> sortNoSort());
+        MenuItem auf = new MenuItem("Aufsteigend");
+        auf.setOnAction((ActionEvent event) -> sortAuf());
+        MenuItem ab = new MenuItem("Absteigend");
+        ab.setOnAction((ActionEvent event) -> sortAb());
+        MenuItem pos = new MenuItem("Positiv");
+        pos.setOnAction((ActionEvent event) -> sortPos());
+        MenuItem neg = new MenuItem("Negativ");
+        neg.setOnAction((ActionEvent event) -> sortNeg());
+        sortOptionMenu.getItems().addAll(noSort, auf, ab, pos,neg);
+    }
+
+    private void sortNoSort() {
+        updateTransactionList(name);
+    };
+    private void sortAuf() {
+        try {
+            accountTransactions = bank.getTransactionsSorted(name,true);
+        } catch (AccountDoesNotExistException e) {throw new RuntimeException(e);}
+        insertViewList(accountTransactions);
+    };
+    private void sortAb(){
+        try {
+            accountTransactions = bank.getTransactionsSorted(name,false);
+        } catch (AccountDoesNotExistException e) {throw new RuntimeException(e);}
+        insertViewList(accountTransactions);
+    };
+    private void sortPos(){
+        try {
+            accountTransactions = bank.getTransactionsByType(name,true);
+        } catch (AccountDoesNotExistException e) {throw new RuntimeException(e);}
+        insertViewList(accountTransactions);
+    };
+    private void sortNeg() {
+        try {
+            accountTransactions = bank.getTransactionsByType(name,false);
+        } catch (AccountDoesNotExistException e) {throw new RuntimeException(e);}
+        insertViewList(accountTransactions);
+    };
+
+    private void insertViewList(List<Transaction> list) {
+        ObservableList<String> items = FXCollections.observableArrayList();
+        list.forEach(transaction -> items.add(transaction.toString()));
+        ObservableList<Label> itemLabels = FXCollections.observableArrayList();
+
+        items.forEach(item -> itemLabels.add(new Label(item)));
+
+        transactionList.setItems(itemLabels);
+    }
 
     public void getMainData(String accountName) {
         bank = PrivateBankHolder.getInstance().getBank();
@@ -64,17 +114,22 @@ public class AccountController {
             throw new RuntimeException(e);
         }
 
-        ObservableList<String> items = FXCollections.observableArrayList();
-        accountTransactions.forEach(transaction -> items.add(transaction.toString()));
-        ObservableList<Label> itemLabels = FXCollections.observableArrayList();
-
-        items.forEach(item -> itemLabels.add(new Label(item)));
-
-        transactionList.setItems(itemLabels);
+        insertViewList(accountTransactions);
     }
 
     @FXML
     public void changeToMainView(ActionEvent actionEvent) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(AccountController.class.getClassLoader().getResource("MainView.fxml"));
+            Parent newScene = fxmlLoader.load();
+            Stage root = (Stage) transactionList.getScene().getWindow();
+
+            root.setTitle("MainView");
+            root.setScene(new Scene(newScene));
+            root.show();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
     @FXML
     public void openAddTransaktion(ActionEvent actionEvent) {

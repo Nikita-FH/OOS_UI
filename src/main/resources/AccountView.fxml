@@ -14,7 +14,7 @@
       <Label layoutX="6.0" layoutY="61.0" text="Kontostand:" AnchorPane.leftAnchor="6.0" />
       <Label fx:id="accountLabel" layoutX="73.0" layoutY="39.0" text="name" />
       <Label fx:id="kontostandLabel" layoutX="70.0" layoutY="61.0" text="Betrag" />
-      <Button layoutX="2.0" layoutY="12.0" mnemonicParsing="false" onAction="#changeToMainView" prefHeight="26.0" prefWidth="70.0" text="zurück" AnchorPane.leftAnchor="545.6" />
+      <Button fx:id="zurueckBttn" layoutX="3.0" layoutY="13.0" mnemonicParsing="false" onAction="#changeToMainView" prefHeight="26.0" prefWidth="70.0" text="zurück" AnchorPane.leftAnchor="3.0" />
       <ListView fx:id="transactionList" layoutX="7.0" layoutY="79.0" prefHeight="307.0" prefWidth="686.0" AnchorPane.bottomAnchor="13.600000000000023" AnchorPane.leftAnchor="7.2000000000000455" AnchorPane.rightAnchor="6.600000000000023" AnchorPane.topAnchor="79.0">
          <contextMenu>
             <ContextMenu fx:id="deleteContext">
@@ -24,12 +24,12 @@
             </ContextMenu>
          </contextMenu>
       </ListView>
-      <MenuButton fx:id="sortOptionMenu" layoutX="565.0" layoutY="48.0" mnemonicParsing="false" text="Keine Sortierung" AnchorPane.rightAnchor="14.200000000000003">
+      <MenuButton fx:id="sortOptionMenu" layoutX="565.0" layoutY="48.0" mnemonicParsing="false" text="Sortieren" AnchorPane.rightAnchor="14.200000000000003">
         <items>
           <MenuItem mnemonicParsing="false" text="Action 1" />
           <MenuItem mnemonicParsing="false" text="Action 2" />
         </items>
       </MenuButton>
-      <Button layoutX="546.0" layoutY="12.0" mnemonicParsing="false" onAction="#openAddTransaktion" text="Transaktion hinzufügen" AnchorPane.rightAnchor="14.0" />
+      <Button layoutX="555.0" layoutY="13.0" mnemonicParsing="false" onAction="#openAddTransaktion" text="Transaktion hinzufügen" AnchorPane.rightAnchor="5.0" />
    </children>
 </AnchorPane>
