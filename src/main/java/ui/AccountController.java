@@ -131,5 +131,7 @@ public class AccountController {
     }
     @FXML
     public void openAddTransaktion(ActionEvent actionEvent) {
+        AddTransactionController addTransactionController = new AddTransactionController();
+        addTransactionController.addAccountView(actionEvent, this,name);
     }
 }
