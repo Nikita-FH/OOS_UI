@@ -1,7 +1,7 @@
 package ui;
 
 import bank.PrivateBank;
-import bank.PrivateBankHolder;
+import bank.PrivateBankModel;
 import bank.Transaction;
 import bank.exceptions.AccountDoesNotExistException;
 import javafx.collections.FXCollections;
@@ -13,10 +13,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class AccountController {
@@ -90,7 +88,7 @@ public class AccountController {
     }
 
     public void getMainData(String accountName) {
-        bank = PrivateBankHolder.getInstance().getBank();
+        bank = PrivateBankModel.getInstance().getBank();
         try {
             accountTransactions = bank.getTransactions(accountName);
         } catch (AccountDoesNotExistException e) {
@@ -107,7 +105,7 @@ public class AccountController {
     }
 
     public void updateTransactionList(String name){
-        bank = PrivateBankHolder.getInstance().getBank();
+        bank = PrivateBankModel.getInstance().getBank();
         try {
             accountTransactions = bank.getTransactions(name);
         } catch (AccountDoesNotExistException e) {

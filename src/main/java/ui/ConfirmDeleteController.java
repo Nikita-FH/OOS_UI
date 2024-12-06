@@ -1,8 +1,7 @@
 package ui;
 
 import bank.PrivateBank;
-import bank.PrivateBankHolder;
-import com.sun.tools.javac.Main;
+import bank.PrivateBankModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,7 +11,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 
 import java.io.IOException;
@@ -49,7 +47,7 @@ public class ConfirmDeleteController {
 
     @FXML
     public void confirmDelte(ActionEvent actionEvent){
-        bank = PrivateBankHolder.getInstance().getBank();
+        bank = PrivateBankModel.getInstance().getBank();
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
         try {

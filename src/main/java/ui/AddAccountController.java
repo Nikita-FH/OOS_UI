@@ -1,9 +1,8 @@
 package ui;
 
 import bank.PrivateBank;
-import bank.PrivateBankHolder;
+import bank.PrivateBankModel;
 import bank.exceptions.AccountAlreadyExistsException;
-import com.sun.tools.javac.Main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,7 +15,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-import java.awt.*;
 import java.io.IOException;
 
 public class AddAccountController {
@@ -51,7 +49,7 @@ public class AddAccountController {
 
     @FXML
     public void createAccount(ActionEvent actionEvent) {
-        bank = PrivateBankHolder.getInstance().getBank();
+        bank = PrivateBankModel.getInstance().getBank();
         try {
             bank.createAccount(nameNewAccount.getText());
             addAccountInfo.setText("Account created");

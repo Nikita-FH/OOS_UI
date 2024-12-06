@@ -1,23 +1,18 @@
 package ui;
 
 import bank.PrivateBank;
-import bank.PrivateBankHolder;
-import bank.exceptions.AccountAlreadyExistsException;
-import bank.exceptions.PrivateBankAlreadyExistsException;
+import bank.PrivateBankModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class MainController {
     @FXML
@@ -43,7 +38,7 @@ public class MainController {
     }
 
     public void updateAccountList() {
-        bank = PrivateBankHolder.getInstance().getBank();
+        bank = PrivateBankModel.getInstance().getBank();
 
         ContextMenu contextMenu = new ContextMenu();
         MenuItem deleteItem = new MenuItem("Delete");

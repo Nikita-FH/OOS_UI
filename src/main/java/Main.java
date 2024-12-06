@@ -7,7 +7,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import ui.MainController;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -60,7 +59,7 @@ public class Main extends Application {
             throw new RuntimeException(e);
         }
 
-        PrivateBankHolder privateBankHolder = PrivateBankHolder.getInstance();
+        PrivateBankModel privateBankHolder = PrivateBankModel.getInstance();
         privateBankHolder.setBank(bank);
     }
 
