@@ -278,7 +278,7 @@ public class PrivateBank implements Bank {
      * @throws IOException wenn es Probleme beim lesen oder schreiben der Transaktion gab
      */
     public void addTransaction(String account, Transaction transaction)
-            throws TransactionAlreadyExistException, AccountDoesNotExistException, TransactionAttributeException, IOException {
+            throws TransactionAlreadyExistException, AccountDoesNotExistException, IOException {
 
             if (!(this.accountsToTransactions.containsKey(account))) throw new AccountDoesNotExistException(account);
             if (transaction == null) throw new TransactionAttributeException("null");

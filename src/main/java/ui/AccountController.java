@@ -33,6 +33,7 @@ public class AccountController {
     private List<Transaction> accountTransactions;
     private PrivateBank bank;
     private String name;
+    private String currentSort = "Keine Sortierung";
 
     public void initialize() {
         sortOptionMenu.getItems().clear();
@@ -51,29 +52,34 @@ public class AccountController {
 
     private void sortNoSort() {
         updateTransactionList(name);
+        currentSort = "Keine Sortierung";
     };
     private void sortAuf() {
         try {
             accountTransactions = bank.getTransactionsSorted(name,true);
         } catch (AccountDoesNotExistException e) {throw new RuntimeException(e);}
+        currentSort = "Aufsteigend";
         insertViewList(accountTransactions);
     };
     private void sortAb(){
         try {
             accountTransactions = bank.getTransactionsSorted(name,false);
         } catch (AccountDoesNotExistException e) {throw new RuntimeException(e);}
+        currentSort = "Absteigend";
         insertViewList(accountTransactions);
     };
     private void sortPos(){
         try {
             accountTransactions = bank.getTransactionsByType(name,true);
         } catch (AccountDoesNotExistException e) {throw new RuntimeException(e);}
+        currentSort = "Positiv";
         insertViewList(accountTransactions);
     };
     private void sortNeg() {
         try {
             accountTransactions = bank.getTransactionsByType(name,false);
         } catch (AccountDoesNotExistException e) {throw new RuntimeException(e);}
+        currentSort = "Negativ";
         insertViewList(accountTransactions);
     };
 
@@ -111,8 +117,25 @@ public class AccountController {
         } catch (AccountDoesNotExistException e) {
             throw new RuntimeException(e);
         }
-
         insertViewList(accountTransactions);
+
+        switch (currentSort) {
+            case "Aufsteigend":
+                sortAuf();
+                break;
+            case "Absteigend":
+                sortAb();
+                break;
+            case "Positiv":
+                sortPos();
+                break;
+            case "Negativ":
+                sortNeg();
+                break;
+            default:
+                insertViewList(accountTransactions);
+        }
+
     }
 
     @FXML
@@ -133,5 +156,14 @@ public class AccountController {
     public void openAddTransaktion(ActionEvent actionEvent) {
         AddTransactionController addTransactionController = new AddTransactionController();
         addTransactionController.addAccountView(actionEvent, this,name);
+    }
+
+    @FXML
+    public void updateKontostand() {
+        try {
+            kontostandLabel.setText(""+bank.getAccountBalance(name));
+        } catch (AccountDoesNotExistException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
