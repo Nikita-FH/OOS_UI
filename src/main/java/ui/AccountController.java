@@ -4,6 +4,7 @@ import bank.PrivateBank;
 import bank.PrivateBankModel;
 import bank.Transaction;
 import bank.exceptions.AccountDoesNotExistException;
+import bank.exceptions.TransactionDoesNotExistException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -17,7 +18,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.List;
 
-public class AccountController {
+public class AccountController extends Controller{
 
     @FXML
     public Label accountLabel;
@@ -84,11 +85,45 @@ public class AccountController {
     };
 
     private void insertViewList(List<Transaction> list) {
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem deleteItem = new MenuItem("Delete");
+
+        deleteItem.setOnAction(e->{
+            ConfirmActionController confirmActionController = new ConfirmActionController();
+            Label label = transactionList.getSelectionModel().getSelectedItem();
+            confirmActionController.confirmActionView((Stage) transactionList.getScene().getWindow(), this,
+                onCloseAction -> {
+                    updateTransactionList(name);
+                    updateKontostand();
+                },
+                onConfirmAction -> {
+                    try{
+                        for (Transaction transaction : bank.getTransactions(name)) {
+                            if (transaction.toString().equals(label.getText())) {
+                                bank.removeTransaction(name, transaction);
+                            }
+                        }
+                    }
+                    catch (AccountDoesNotExistException | TransactionDoesNotExistException | IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    updateTransactionList(name);
+                    updateKontostand();
+                    return null;
+                });
+        });
+        contextMenu.getItems().addAll(deleteItem);
+
         ObservableList<String> items = FXCollections.observableArrayList();
         list.forEach(transaction -> items.add(transaction.toString()));
         ObservableList<Label> itemLabels = FXCollections.observableArrayList();
 
-        items.forEach(item -> itemLabels.add(new Label(item)));
+        items.forEach(item -> {
+                Label label = new Label(item);
+                label.setContextMenu(contextMenu);
+                itemLabels.add(label);
+            }
+        );
 
         transactionList.setItems(itemLabels);
     }
@@ -135,7 +170,6 @@ public class AccountController {
             default:
                 insertViewList(accountTransactions);
         }
-
     }
 
     @FXML
@@ -167,3 +201,5 @@ public class AccountController {
         }
     }
 }
+
+

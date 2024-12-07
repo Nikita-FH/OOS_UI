@@ -17,7 +17,7 @@ import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 
-public class AddAccountController {
+public class AddAccountController extends Controller{
 
     @FXML
     public TextField nameNewAccount;
