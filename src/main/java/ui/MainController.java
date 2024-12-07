@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class MainController {
+public class MainController extends Controller{
     @FXML
     public Button createAccountBttn;
     @FXML
@@ -44,10 +44,23 @@ public class MainController {
         MenuItem deleteItem = new MenuItem("Delete");
         MenuItem editItem = new MenuItem("Account ansehen");
 
-        deleteItem.setOnAction(e->{
-            ConfirmDeleteController confirmDeleteController = new ConfirmDeleteController();
+        deleteItem.setOnAction(e -> {
+            ConfirmActionController confirmActionController = new ConfirmActionController();
             Label label = accountList.getSelectionModel().getSelectedItem();
-            confirmDeleteController.confirmDeleteView((Stage) accountList.getScene().getWindow(), this, label.getText());
+            confirmActionController.confirmActionView((Stage) accountList.getScene().getWindow(), this,
+            onCloseAction -> {
+                updateAccountList();
+            },
+            onConfirmAction -> {
+                try {
+                    bank.deleteAccount(label.getText());
+                    updateAccountList();
+                } catch (IOException e2) {
+                    e2.printStackTrace();
+                }
+                return null;
+            });
+
         });
 
         editItem.setOnAction(e -> {
