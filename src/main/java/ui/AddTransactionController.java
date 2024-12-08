@@ -19,6 +19,10 @@ import javafx.stage.WindowEvent;
 import java.io.IOException;
 import java.util.Calendar;
 
+/**
+ * Controller der sich um die AddTransactionView kümmert
+ * @author Nikita
+ */
 public class AddTransactionController extends Controller{
     @FXML
     public TextField paymentMengeField;
@@ -34,9 +38,21 @@ public class AddTransactionController extends Controller{
     public TextField transferRecipientField;
     @FXML
     public Label transferInfoLabel;
+    /**
+     * Name Des Accounts um den es sich handelt
+     */
     private static String  name;
+    /**
+     * Der AccountController der die View besitzt
+     */
     private static AccountController accountController;
 
+    /**
+     * Öffnet die AddTransactionView
+     * @param event ActionEvent das die Aktion angestoßen hat
+     * @param accountController AccountController dem die View gehören soll
+     * @param name String Name des Accounts dem die Transaktionen hinzugefügt werden soll
+     */
     @FXML
     public void addAccountView(ActionEvent event, AccountController accountController, String name) {
         AddTransactionController.name = name;
@@ -60,6 +76,10 @@ public class AddTransactionController extends Controller{
         dialog.show();
     }
 
+    /**
+     * Erstellt eine neues Payment für den Account
+     * @param actionEvent ActionEvent das die Aktion angestoßen hat
+     */
     public void createPayment(ActionEvent actionEvent) {
         PrivateBank bank = PrivateBankModel.getInstance().getBank();
         Payment payment;
@@ -86,6 +106,10 @@ public class AddTransactionController extends Controller{
         accountController.updateTransactionList(name);
     }
 
+    /**
+     * Erstellt eine Übwerweisung an einen anderen Account. Fügt die Transaktion beiden Accounts hinzu
+     * @param actionEvent ActionEvent, dass die Aktion angestoßen hat
+     */
     public void createTransaction(ActionEvent actionEvent) {
         PrivateBank bank = PrivateBankModel.getInstance().getBank();
         OutgoingTransfer outgoingTransfer;

@@ -1,7 +1,6 @@
 package ui;
 
 import bank.PrivateBank;
-import bank.PrivateBankModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,20 +22,32 @@ public class MainController extends Controller{
     private ListView<Label> accountList;
     @FXML
     private Button addAccountBttn;
-
+    /**
+     * Die Bank in der wir die Accounts managen
+     */
     private PrivateBank bank;
 
+    /**
+     * initialisiere die MainView
+     */
     @FXML
     public void initialize() {
         updateAccountList();
     }
 
+    /**
+     * öffnet die AddAccountView
+     * @param event ActionEvent das die Aktion angestoßen hat
+     */
     @FXML
     public void openAddAccount(ActionEvent event) {
         AddAccountController addAccountController = new AddAccountController();
         addAccountController.addAccountView(event, this);
     }
 
+    /**
+     * Funktion die die Accounts aktualisiert
+     */
     public void updateAccountList() {
         bank = PrivateBankModel.getInstance().getBank();
 
@@ -44,25 +55,26 @@ public class MainController extends Controller{
         MenuItem deleteItem = new MenuItem("Delete");
         MenuItem editItem = new MenuItem("Account ansehen");
 
+        //Fügt jedem Account eine delete Aktion hinzu
         deleteItem.setOnAction(e -> {
             ConfirmActionController confirmActionController = new ConfirmActionController();
             Label label = accountList.getSelectionModel().getSelectedItem();
-            confirmActionController.confirmActionView((Stage) accountList.getScene().getWindow(), this,
-            onCloseAction -> {
-                updateAccountList();
-            },
-            onConfirmAction -> {
-                try {
-                    bank.deleteAccount(label.getText());
-                    updateAccountList();
-                } catch (IOException e2) {
-                    e2.printStackTrace();
-                }
-                return null;
-            });
-
+            confirmActionController.confirmActionView((Stage) accountList.getScene().getWindow(),
+                    onCloseAction -> {
+                        updateAccountList();
+                    },
+                    //OnConfirmAction
+                    () -> {
+                        try {
+                            bank.deleteAccount(label.getText());
+                            updateAccountList();
+                        } catch (IOException e2) {
+                            e2.printStackTrace();
+                        }
+                    });
         });
 
+        //Fügt jedem Account eine Editier funktion hinzu
         editItem.setOnAction(e -> {
             Label label = accountList.getSelectionModel().getSelectedItem();
             changeToAccountView(label.getText());
@@ -83,6 +95,11 @@ public class MainController extends Controller{
 
         accountList.setItems(options);
     }
+
+    /**
+     * Funktion die die AccountView öffnet zum bearbeiten des Accounts
+     * @param accountName Name des Accounts den wir bearbeiten wollen
+     */
     @FXML
     public void changeToAccountView(String accountName) {
         try {

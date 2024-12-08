@@ -1,7 +1,6 @@
 package ui;
 
 import bank.PrivateBank;
-import bank.PrivateBankModel;
 import bank.exceptions.AccountAlreadyExistsException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,6 +16,10 @@ import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 
+/**
+ * Controller der sich um die AddAccountView kümmert
+ * @author Nikita
+ */
 public class AddAccountController extends Controller{
 
     @FXML
@@ -24,9 +27,16 @@ public class AddAccountController extends Controller{
     @FXML
     public Label addAccountInfo;
 
+    /**
+     * Die Bank in die wir den Account einfügen wollen
+     */
     private PrivateBank bank;
 
-
+    /**
+     * Öffnet die AddAccountView
+     * @param event ActionEvent das die hinzufügen Aktion angestoßen hat
+     * @param mainController MainController Objekt zu dem die View gehören soll
+     */
     @FXML
     public void addAccountView(ActionEvent event,MainController mainController) {
             Stage dialog = new Stage();
@@ -47,6 +57,10 @@ public class AddAccountController extends Controller{
             dialog.show();
     }
 
+    /**
+     * Funktion die das Hinzufügen des Accounts realisiert
+     * @param actionEvent ActionEvent das die Aktion angestoßen hat
+     */
     @FXML
     public void createAccount(ActionEvent actionEvent) {
         bank = PrivateBankModel.getInstance().getBank();

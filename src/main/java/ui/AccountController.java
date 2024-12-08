@@ -1,7 +1,6 @@
 package ui;
 
 import bank.PrivateBank;
-import bank.PrivateBankModel;
 import bank.Transaction;
 import bank.exceptions.AccountDoesNotExistException;
 import bank.exceptions.TransactionDoesNotExistException;
@@ -18,6 +17,10 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Controller Klasse für die AccountView
+ * @author Nikita
+ */
 public class AccountController extends Controller{
 
     @FXML
@@ -31,11 +34,20 @@ public class AccountController extends Controller{
     @FXML
     public ListView<Label> transactionList;
 
+    /**Liste aller Transactions Elemente die angezeigt werden sollen*/
     private List<Transaction> accountTransactions;
+    /**Die Bank in der wir uns befinden*/
     private PrivateBank bank;
+    /**Der Name des Accounts mit dem wir arbeiten*/
     private String name;
+    /**
+     * Die Sortierung die Momentan ausgewählt ist
+     */
     private String currentSort = "Keine Sortierung";
 
+    /**
+     * initialisiere die View, hier die möglichkeiten zum Sortieren einfügen
+     */
     public void initialize() {
         sortOptionMenu.getItems().clear();
         MenuItem noSort = new MenuItem("Keine Sortierung");
@@ -51,10 +63,17 @@ public class AccountController extends Controller{
         sortOptionMenu.getItems().addAll(noSort, auf, ab, pos,neg);
     }
 
+    /**
+     * keine Sortierung
+     */
     private void sortNoSort() {
         updateTransactionList(name);
         currentSort = "Keine Sortierung";
     };
+
+    /**
+     * sortiere die Transaktionen des Accounts aufsteigend
+     */
     private void sortAuf() {
         try {
             accountTransactions = bank.getTransactionsSorted(name,true);
@@ -62,6 +81,10 @@ public class AccountController extends Controller{
         currentSort = "Aufsteigend";
         insertViewList(accountTransactions);
     };
+
+    /**
+     * sortiere die Transaktionen des Accounts absteigend
+     */
     private void sortAb(){
         try {
             accountTransactions = bank.getTransactionsSorted(name,false);
@@ -69,6 +92,10 @@ public class AccountController extends Controller{
         currentSort = "Absteigend";
         insertViewList(accountTransactions);
     };
+
+    /**
+     * sortiere die Transaktionen des Accounts nach Positiv
+     */
     private void sortPos(){
         try {
             accountTransactions = bank.getTransactionsByType(name,true);
@@ -76,6 +103,10 @@ public class AccountController extends Controller{
         currentSort = "Positiv";
         insertViewList(accountTransactions);
     };
+
+    /**
+     * sortiere die Transaktionen des Accounts Negativ
+     */
     private void sortNeg() {
         try {
             accountTransactions = bank.getTransactionsByType(name,false);
@@ -84,33 +115,38 @@ public class AccountController extends Controller{
         insertViewList(accountTransactions);
     };
 
+    /**
+     * Füge die Transaktionsliste in die Anzeige ein in Reihenfolge der Liste
+     * @param list List der Transaktionen
+     */
     private void insertViewList(List<Transaction> list) {
         ContextMenu contextMenu = new ContextMenu();
         MenuItem deleteItem = new MenuItem("Delete");
 
+        //Die Aktionen die ausgeführt werden sollen, wenn Delete gedrückt wird
         deleteItem.setOnAction(e->{
             ConfirmActionController confirmActionController = new ConfirmActionController();
             Label label = transactionList.getSelectionModel().getSelectedItem();
-            confirmActionController.confirmActionView((Stage) transactionList.getScene().getWindow(), this,
-                onCloseAction -> {
-                    updateTransactionList(name);
-                    updateKontostand();
-                },
-                onConfirmAction -> {
-                    try{
-                        for (Transaction transaction : bank.getTransactions(name)) {
-                            if (transaction.toString().equals(label.getText())) {
-                                bank.removeTransaction(name, transaction);
+            confirmActionController.confirmActionView((Stage) transactionList.getScene().getWindow(),
+                    onCloseAction -> {
+                        updateTransactionList(name);
+                        updateKontostand();
+                    },
+                    //onConfirmAction
+                    () -> {
+                        try{
+                            for (Transaction transaction : bank.getTransactions(name)) {
+                                if (transaction.toString().equals(label.getText())) {
+                                    bank.removeTransaction(name, transaction);
+                                }
                             }
                         }
-                    }
-                    catch (AccountDoesNotExistException | TransactionDoesNotExistException | IOException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                    updateTransactionList(name);
-                    updateKontostand();
-                    return null;
-                });
+                        catch (AccountDoesNotExistException | TransactionDoesNotExistException | IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                        updateTransactionList(name);
+                        updateKontostand();
+                    });
         });
         contextMenu.getItems().addAll(deleteItem);
 
@@ -128,6 +164,10 @@ public class AccountController extends Controller{
         transactionList.setItems(itemLabels);
     }
 
+    /**
+     * Pipline Funktion zum erhalten der notwendigen Daten vom MainView Controller
+     * @param accountName
+     */
     public void getMainData(String accountName) {
         bank = PrivateBankModel.getInstance().getBank();
         try {
@@ -145,6 +185,10 @@ public class AccountController extends Controller{
         }
     }
 
+    /**
+     * Aktualisiere die Transaktionsliste
+     * @param name String des Accounts zu dem die Transaktionen angezegit werden müssen
+     */
     public void updateTransactionList(String name){
         bank = PrivateBankModel.getInstance().getBank();
         try {
@@ -152,6 +196,7 @@ public class AccountController extends Controller{
         } catch (AccountDoesNotExistException e) {
             throw new RuntimeException(e);
         }
+
         insertViewList(accountTransactions);
 
         switch (currentSort) {
@@ -172,6 +217,10 @@ public class AccountController extends Controller{
         }
     }
 
+    /**
+     * Funktion zum wechseln in die MainView
+     * @param actionEvent
+     */
     @FXML
     public void changeToMainView(ActionEvent actionEvent) {
         try {
@@ -186,12 +235,20 @@ public class AccountController extends Controller{
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * Funktion die die AddTransaktionView anlegt
+     * @param actionEvent das Event das die Methode angestoßen hat
+     */
     @FXML
     public void openAddTransaktion(ActionEvent actionEvent) {
         AddTransactionController addTransactionController = new AddTransactionController();
         addTransactionController.addAccountView(actionEvent, this,name);
     }
 
+    /**
+     * aktualisiert den Kontostand
+     */
     @FXML
     public void updateKontostand() {
         try {
